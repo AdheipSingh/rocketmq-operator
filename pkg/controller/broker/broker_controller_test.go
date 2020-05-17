@@ -56,7 +56,7 @@ func TestBrokerController(t *testing.T) {
 			Namespace: namespace,
 		},
 		Spec: rocketmqv1alpha1.BrokerSpec{
-			Size: replicas, // Set desired number of Broker replicas.
+			Size: int(replicas), // Set desired number of Broker replicas.
 		},
 	}
 	// Objects to track in the fake client.

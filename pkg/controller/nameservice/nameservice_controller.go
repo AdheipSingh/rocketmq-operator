@@ -30,6 +30,7 @@ import (
 	"github.com/apache/rocketmq-operator/pkg/share"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
@@ -236,6 +237,14 @@ func (r *ReconcileNameService) updateNameServiceStatus(instance *rocketmqv1alpha
 	}
 
 	return reconcile.Result{}, nil
+}
+
+func getAffinities(nameService *rocketmqv1alpha1.NameService) *v1.Affinity {
+	var affinity = v1.Affinity{}
+	if nameService.Spec.Affinity != nil {
+		affinity = *nameService.Spec.Affinity
+	}
+	return &affinity
 }
 
 func getVolumeClaimTemplates(nameService *rocketmqv1alpha1.NameService) []corev1.PersistentVolumeClaim {

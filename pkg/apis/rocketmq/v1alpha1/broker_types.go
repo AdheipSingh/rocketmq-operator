@@ -19,6 +19,7 @@ package v1alpha1
 
 import (
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -50,6 +51,9 @@ type BrokerSpec struct {
 	HostPath string `json:"hostPath"`
 	// VolumeClaimTemplates defines the StorageClass
 	VolumeClaimTemplates []corev1.PersistentVolumeClaim `json:"volumeClaimTemplates"`
+	//  Afinity to be used to for enabling node, pod affinity and anti-affinity
+	// +optional
+	Affinity *v1.Affinity `json:"affinity,omitempty"`
 	// The name of pod where the metadata from
 	ScalePodName string `json:"scalePodName"`
 }

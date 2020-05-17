@@ -31,6 +31,7 @@ import (
 	"github.com/apache/rocketmq-operator/pkg/tool"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
@@ -391,6 +392,7 @@ func (r *ReconcileBroker) getBrokerStatefulSet(broker *rocketmqv1alpha1.Broker, 
 					Labels: ls,
 				},
 				Spec: corev1.PodSpec{
+					Affinity: getAffinities(broker),
 					Containers: []corev1.Container{{
 						Image: broker.Spec.BrokerImage,
 						Name:  cons.BrokerContainerName,
@@ -449,6 +451,14 @@ func (r *ReconcileBroker) getBrokerStatefulSet(broker *rocketmqv1alpha1.Broker, 
 
 	return dep
 
+}
+
+func getAffinities(broker *rocketmqv1alpha1.Broker) *v1.Affinity {
+	var affinity = v1.Affinity{}
+	if broker.Spec.Affinity != nil {
+		affinity = *broker.Spec.Affinity
+	}
+	return &affinity
 }
 
 func getVolumeClaimTemplates(broker *rocketmqv1alpha1.Broker) []corev1.PersistentVolumeClaim {
