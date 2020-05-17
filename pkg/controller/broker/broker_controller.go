@@ -31,7 +31,6 @@ import (
 	"github.com/apache/rocketmq-operator/pkg/tool"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
@@ -453,8 +452,8 @@ func (r *ReconcileBroker) getBrokerStatefulSet(broker *rocketmqv1alpha1.Broker, 
 
 }
 
-func getAffinities(broker *rocketmqv1alpha1.Broker) *v1.Affinity {
-	var affinity = v1.Affinity{}
+func getAffinities(broker *rocketmqv1alpha1.Broker) *corev1.Affinity {
+	var affinity = corev1.Affinity{}
 	if broker.Spec.Affinity != nil {
 		affinity = *broker.Spec.Affinity
 	}
